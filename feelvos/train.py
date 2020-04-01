@@ -46,10 +46,10 @@ if __name__ == "__main__":
     model = FEELVOS(3, 1, use_gt=True, pretrained='./unet/weight010.pt')
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.lr)
     criterion = nn.BCELoss()
-    success_metric = dice_coeff
+    success_metric = nn.BCELoss()
     summary = SummaryWriter()
 
-    trainer = Trainer(model, criterion, optimizer, success_metric, device, summary, False)
+    trainer = Trainer(model, criterion, optimizer, success_metric, device, None, False)
     fit = trainer.fit(dl_train, dl_test, num_epochs=cfg.epoch, checkpoints='./save2/'+model.__class__.__name__+'.pt')
     torch.save(model.state_dict(), './save/final_state_dict.pt')
     torch.save(model, './save/final.pt')
