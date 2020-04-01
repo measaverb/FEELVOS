@@ -1,0 +1,8 @@
+numpy
+pandas
+opencv-python
+pillow
+torch
+torchvision
+modelsummary
+natsort
