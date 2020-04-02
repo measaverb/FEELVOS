@@ -1,6 +1,7 @@
 from cv2 import cv2
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torchvision
 from modelsummary import summary
 from feelvos.models.Backbone import UNet
@@ -26,17 +27,24 @@ class FEELVOS(nn.Module):
         x1 = x_list[0]
         x2 = x_list[1]
         x3 = x_list[2]
+        
         if self.use_gt == False:
             with torch.no_grad():
                 x1 = self.backbone(x1)
                 x2 = self.backbone(x2)
         with torch.no_grad():
             x3 = self.backbone(x3)
+        
         x1_l = []; x1_e = []
         x2_l = []; x2_e = []
         x3_l = []; x3_e = []
         gm = []; lm = []
         logits = []
+        
+        x1 = F.interpolate(x1, 32)
+        x2 = F.interpolate(x2, 32)
+        x3 = F.interpolate(x3, 32)
+        
         for i in range(self.n_classes):
             x1_l.append(x1[:, i, :, :].unsqueeze(1))
             x1_e.append(self.embedding(x1_l[i]))

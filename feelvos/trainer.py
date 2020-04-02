@@ -190,17 +190,11 @@ class Trainer:
         else:
             X = X.to(self.device)
         pred = self.model(X)
-        print(pred.size())
-        loss = self.loss_fn(pred, F.interpolate(y[2], 232).to(self.device))
-        print(loss)
+        loss = self.loss_fn(pred, F.interpolate(y[2], 8).to(self.device))
         self.optimizer.zero_grad()
-        print('opt start')
         loss.backward()
-        print('back start')
         self.optimizer.step()
-        print('opt step')
-        score = self.objective_metric(pred, F.interpolate(y[2], 232).to(self.device))
-        print(score)
+        score = self.objective_metric(pred, F.interpolate(y[2], 8).to(self.device))
         if self.tensorboard_logger:
             self.tensorboard_logger.add_scalar('exp-%s/batch/train/loss' % self.experiment_prefix, loss, index)
             self.tensorboard_logger.add_scalar('exp-%s/batch/train/score' % self.experiment_prefix, score, index)
@@ -228,8 +222,8 @@ class Trainer:
             else:
                 X = X.to(self.device)
             pred = self.model(X)
-            loss = self.loss_fn(pred, F.interpolate(y[2], 232).to(self.device))
-            score = self.objective_metric(pred, F.interpolate(y[2], 232).to(self.device))
+            loss = self.loss_fn(pred, F.interpolate(y[2], 8).to(self.device))
+            score = self.objective_metric(pred, F.interpolate(y[2], 8).to(self.device))
             if self.tensorboard_logger:
                 self.tensorboard_logger.add_scalar('exp-%s/batch/test/loss' % self.experiment_prefix, loss, index)
                 self.tensorboard_logger.add_scalar('exp-%s/batch/test/score' % self.experiment_prefix, score, index)

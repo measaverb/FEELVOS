@@ -15,7 +15,7 @@ from tensorboardX import SummaryWriter
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    '--batch_size', type=int, default=2
+    '--batch_size', type=int, default=7
 )
 parser.add_argument(
     '--epoch', type=int, default=40
